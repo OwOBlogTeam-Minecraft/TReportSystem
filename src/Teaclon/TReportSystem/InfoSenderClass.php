@@ -61,43 +61,18 @@ abstract class InfoSenderClass extends PluginBase
 	}
 	
 	
-	public function throwLoggerMessage($msg = null, $type = "default")
+	public function throwLoggerMessage($msg = null, $type = "info")
 	{
-		if($type==="trying")
-		{
-			$this->getServer()->getLogger()->info(" §6§lTRY >>  §r§6".$msg);
-		}
-		elseif($type==="successful")
-		{
-			$this->getServer()->getLogger()->info(" §aSUCCESSFUL >>  ".$msg);
-		}
-		elseif($type==="default")
-		{
-			$this->getServer()->getLogger()->info($msg);
-		}
-		elseif($type==="notice")
-		{
-			$this->getServer()->getLogger()->notice(" §bNOTICE >>  ".$msg);
-		}
-		elseif($type==="error")
-		{
-			$this->getServer()->getLogger()->error(" §cERROR >>  ".$msg);
-		}
-		elseif($type==="warning")
-		{
-			$this->getServer()->getLogger()->warning(" §eWARNING >>  ".$msg);
-		}
-		elseif($type==="alert")
-		{
-			$this->getServer()->getLogger()->alert(" §4ALERT >>  ".$msg);
-		}
-		elseif($type==="debug")
-		{
-			$this->getServer()->getLogger()->debug(" §rDEBUG >>  ".$msg);
-		}
-		else
-		{
+		$type = strtolower($type);
+		if(!in_array($type, ["info", "notice", "error", "warning", "alert", "debug", "success", "try"])) {
 			throw new \Exception("调用错误");
+		}
+		if($type === "success") {
+			$this->getServer()->getLogger()->info(" §aSUCCESSFUL >>  ".$msg);
+		} elseif($type === "try") {
+			$this->getServer()->getLogger()->info(" §aTRY >>  ".$msg);
+		} else {
+			$this->getServer()->getLogger()->{$type}(" ".strtoupper($type)." >> {$msg}");
 		}
 	}
 	
